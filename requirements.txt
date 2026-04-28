@@ -1,0 +1,32 @@
+# 1. 수치 연산 및 딥러닝 엔진 (호환성 및 CPU 최적화)
+numpy<2.0.0
+torch==2.2.2 --index-url https://download.pytorch.org/whl/cpu
+
+# 2. LangChain v1.0+ 핵심 및 파트너 패키지 (LCEL 준수)
+langchain>=1.0.0
+langchain-core
+langchain-community
+langchain-text-splitters
+langchain-huggingface
+langchain-ollama        # Ollama 연동 최신 표준
+langchain-chroma        # ChromaDB 연동 최신 표준
+langchain-openai        # 외부 API(Groq 등 OpenAI 호환) 지원
+
+# 3. 데이터베이스 및 서버 유틸리티
+chromadb                # 벡터 DB [cite: 7, 10]
+httpx                   # 비동기 HTTP 통신 (Ollama/External API)
+uvicorn                 # FastAPI 실행 엔진 [cite: 7]
+fastapi                 # 백엔드 프레임워크 [cite: 7, 10]
+streamlit               # 프런트엔드 UI (OmniGraph 요구사항)
+python-dotenv           # 보안 설정(.env) 관리 [cite: 1]
+python-multipart        # 파일 업로드 처리 필수
+
+# 4. 문서 처리 및 범용 OCR 파이프라인
+PyMuPDF                 # fitz 라이브러리 (고속 텍스트 추출) [cite: 1]
+sentence-transformers   # 로컬 임베딩 처리
+transformers
+huggingface_hub
+
+# 5. 성능 및 확장성
+pydantic>=2.0.0         # 데이터 검증 
+tqdm                    # 처리 프로세스 시각화 [cite: 1]
