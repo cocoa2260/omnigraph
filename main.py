@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Body
+from fastapi import FastAPI, UploadFile, File, Body, Header, HTTPException
 from app.engine import RagEngine
 import shutil
 import os
@@ -10,6 +10,8 @@ from langchain_core.runnables import RunnablePassthrough
 
 app = FastAPI(title="OmniGraph API")
 engine = RagEngine()
+# 가상의 유저 DB (추후 MariaDB/PostgreSQL 연동)
+USER_DB = {"admin": "admin1234"}
 
 @app.post("/upload")
 async def upload_document(file: UploadFile = File(...)):
@@ -25,6 +27,13 @@ async def upload_document(file: UploadFile = File(...)):
     os.remove(temp_path) # 임시파일 삭제
     return {"status": "success", "message": f"{len(docs)} chunks indexed."}
 
+@app.post("/chat")
+async def chat_endpoint(
+    payload: dict = Body(...),
+    # x_token: str = Depends(verify_token) # 보안 적용 시 주석 해제
+):
+
+# ... 기존 채팅 로직 ...
 @app.post("/chat")
 async def chat_endpoint(payload: dict = Body(...)):
     query = payload.get("query")
@@ -57,3 +66,4 @@ async def chat_endpoint(payload: dict = Body(...)):
     
     response = await chain.ainvoke(query)
     return {"answer": response}
+    pass
