@@ -1,0 +1,30 @@
+services:
+  api:
+    build: .
+    container_name: omnigraph-api-prod
+    restart: always  # 서버 재시작 시 자동 실행
+    ports:
+      - "80:8000"    # 외부 80포트를 내부 8000으로 연결
+    env_file: .env
+    depends_on:
+      - chroma-db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  chroma-db:
+    image: chromadb/chroma:latest
+    container_name: omnigraph-db-prod
+    volumes:
+      - ./chroma_data:/chroma/chroma
+    restart: always
+
+  ui:
+    build: .
+    container_name: omnigraph-ui-prod
+    command: streamlit run gui.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    restart: always
