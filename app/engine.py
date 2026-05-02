@@ -39,3 +39,22 @@ class RagEngine:
             collection_name=collection_name
         )
         return vectorstore
+    
+    def get_db(self, collection_name: str):
+        """저장된 ChromaDB 인스턴스를 로드합니다."""
+        return Chroma(
+            persist_directory=self.db_path,
+            embedding_function=self.embeddings,
+            collection_name=collection_name
+        )
+
+    def get_retriever(self, collection_name: str):
+        """
+        'PDF Daol'의 높은 검색 정확도를 재현하기 위해 
+        유사도 기반 검색에 상위 3개 청크를 가져오도록 설정합니다.
+        """
+        vectorstore = self.get_db(collection_name)
+        return vectorstore.as_retriever(
+            search_type="similarity",
+            search_kwargs={"k": 3}
+        )
